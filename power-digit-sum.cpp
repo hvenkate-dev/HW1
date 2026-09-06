@@ -1,5 +1,6 @@
 // Thanks WILL for installing G++ and helping with the setup
-// Thanks Huy'30(John) for helping with verification of the code
+// Thanks Huy'30(John) for helping with string to short method
+// Atleast Half a dozen times I have thought what would be the sum of digits of a number
 
 #include <iostream>
 #include <string>
@@ -9,16 +10,23 @@ using namespace std;
 
 // Custom power function
 unsigned int power(unsigned short a, unsigned short b)/* Returns a raised to the power of b using a for loop
-unsigned meaning only postive integers as negative is not permitted */
+unsigned meaning only postive integers as negative is not permitted
+0 to 4,294,967,29 to 32,767 for a signed short and 0 to 65,535 for an unsigned short 
+Short uses far less memory compared to int *
+Unsigned int is used for return value because it can hold a larger range of values compared to unsigned short*/
 {
     unsigned int n = 1;
 
     for (unsigned short i = 0; i < b; i++) // in each iteration, multiply n by a, iteration count is b using variable i
     {
         n = n * a; // n is multiplied by a in each iteration
+        /* for example: a = 2 and b =3 
+        i = 0, n = 1 * 2 = 2
+        i = 1, n = 2 * 2 = 4
+        i = 2, n = 4 * 2 = 8 */
     }
 
-    return n;// returning final n value
+    return n;// returning final n value (n=8)
 }
 
 int main(int argc, char* argv[])// input of argument count to check is only 3 argc is provided and the values of argument are provided in argv array//
