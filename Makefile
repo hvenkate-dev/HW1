@@ -1,2 +1,2 @@
 all:
-	g++ power-digit-sum.cpp -o pds
+	g++ power-digit-sum.cpp -Wall -o pds

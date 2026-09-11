@@ -1,97 +1,117 @@
-// Thanks WILL for installing G++ and helping with the setup
-// Thanks Huy'30(John) for helping with string to short method
-// Atleast Half a dozen times I have thought what would be the sum of digits of a number
+ #include <iostream>
+ #include <string>
+ #include <cctype>
+ #include <vector>
+ #include <cmath>
+ using namespace std;
 
-#include <iostream>
-#include <string>
-#include <cctype>
+ unsigned long long int power(unsigned int a, unsigned int b) {
+	 unsigned long long int n = 1;
+	 for (unsigned int i = 0; i < b; i++) {
+		 n = n * a;
+	 }
+	 return n;
+ }
 
-using namespace std;
+ /* Explaining the Syntax: vector<int>: the function returns a vector containing integers
+ vectorize_digits: the function name. unsigned long long n: the function receives one positive whole number.*/
+ vector<int> vectorize_digits(unsigned long long n) {
+	 vector<int> digits;
+	 string number = to_string(n);
+	 /*Characters representing numbers have character codes. Subtracting '0' converts a numeric character into its integer value*/
+	 for (char digit : number) {
+		 digits.push_back(digit - '0');
+		 /* Example: '5' - '0' = 5 * '2' - '0' = 2*/
+	 }
+	 return digits;
+ }
 
-// Custom power function
-unsigned int power(unsigned short a, unsigned short b)/* Returns a raised to the power of b using a for loop
-unsigned meaning only postive integers as negative is not permitted
-0 to 4,294,967,29 to 32,767 for a signed short and 0 to 65,535 for an unsigned short 
-Short uses far less memory compared to int *
-Unsigned int is used for return value because it can hold a larger range of values compared to unsigned short*/
-{
-    unsigned int n = 1;
+ // Converts a vector of integers into a readable format such as [8, 2, 3].
+ string vec_to_string(vector<int> vec) {
+	 string result = "[";
+	 for (size_t i = 0; i < vec.size(); i++) {
+		 result += to_string(vec[i]);
+		 // Add separators only between values, so the result has no trailing comma.
+		 if (i < vec.size() - 1) {
+			 result += ", ";
+		 }
+	 }
+	 result += "]";
+	 return result;
+ }
 
-    for (unsigned short i = 0; i < b; i++) // in each iteration, multiply n by a, iteration count is b using variable i
-    {
-        n = n * a; // n is multiplied by a in each iteration
-        /* for example: a = 2 and b =3 
-        i = 0, n = 1 * 2 = 2
-        i = 1, n = 2 * 2 = 4
-        i = 2, n = 4 * 2 = 8 */
-    }
+ int sum_vector(vector<int> v) {
+	 int sum = 0;
+	 for (int number : v) {
+		 sum += number;
+	 }
+	 return sum;
+ }
 
-    return n;// returning final n value (n=8)
-}
+ int main(int argc, char* argv[]) {
+	 //Checking If the input values are provided or not
+	 if (argc != 3) {
+		 cout << "Error: Please provide only two values." << endl;
+		 cout << "Use: ./pds a b" << endl;
+		 return 1;
+	 }
 
-int main(int argc, char* argv[])// input of argument count to check is only 3 argc is provided and the values of argument are provided in argv array//
-{
-    // Checking if only two arguments are provided
-    if (argc != 3) // If there are more than two arguments, ./pds a b it raises an error
-    {
-        cout << "Error: Please provide only two values." << endl;
-        cout << "Use: ./pds a b" << endl;
-        return 1;
-    }
+	 string aInput = argv[1];
+	 string bInput = argv[2];
 
-    string aInput = argv[1];//Taking String Input of Value a
-    string bInput = argv[2];//Taking String Input of Value b
+	 //Checking If the input values are empty or not
+	 if (aInput.empty() or bInput.empty()) {
+		 cout << "Error: values cannot be empty." << endl;
+		 return 1;
+	 }
 
-    // Checking if String Input A contains only integer values
-    for (char c : aInput) // range based loop for checking each string value of a
-    {
-        if (!isdigit(c))// isdigit(c) function from cctype library, if char is not a digit, ! returns true therefore error is written in terminal
-        {
-            cout << "Error: String Input A contains non-integer values." << endl; // Raising Error
-            return 1;
-        }
-    }
+	 //Checking If the input values are negative or not
+	 if (aInput[0] == '-' or bInput[0] == '-') {
+		 cout << "No negative integers please" << endl;
+		 return 1;
+	 }
 
-    // Checking if String Input B contains only integer values
-    for (char c : bInput) // range based loop for checking each string value of b
-    {
-        if (!isdigit(c)) //isdigit(c) function from cctype library, if char is not a digit, ! returns true therefore error is written in terminal
-        {
-            cout << "Error: String Input B contains non-integer values." << endl; // Raising Error
-            return 1;
-        }
-    }
+	 //Checking If the input values are integers or not
+	 for (char c : aInput) {
+		 if (!isdigit(c)) {
+			 cout << "Error: String Input A contains non-integer values." << endl;
+			 return 1;
+		 }
+	 }
+	 for (char c : bInput) {
+		 if (!isdigit(c)) {
+			 cout << "Error: String Input B contains non-integer values." << endl;
+			 return 1;
+		 }
+	 }
 
-    // Check for empty input
-    if (aInput.empty() or bInput.empty()) // if either a or b input is empty, raise an error
-    {
-        cout << "Error: values cannot be empty." << endl; // Raising Error
-        return 1;
-    }
+	 unsigned int a = stoul(aInput);
+	 unsigned int b = stoul(bInput);
 
-    // Convert strings to numbers
-    /* stoi is a function that converts a string to an unsigned short integer is used to hold the converted values */
+	 // Special Case for when a = 0, log(0) is undefined
+	 if (a == 0) {
+		 unsigned long long int n = power(a, b);
+		 vector<int> digits = vectorize_digits(n);
+		 int digitSum = sum_vector(digits);
+		 cout << a << "^" << b << " = " << n << endl;
+		 cout << "Sum Of Digits: " << digitSum << endl;
+		 return 0;
+	 }
 
-    unsigned short a = stoi(aInput);
-    unsigned short b = stoi(bInput);
+	 //Checking if the given values will not overflow
+	 double logResult = b * log10(a);
+	 double logMax = 64 * log10(2);
+	 if (logResult >= logMax) {
+		 cout << "Error: The values are too large and would cause overflow." << endl;
+		 return 1;
+	 }
 
-    // Compute a^b
-    unsigned int n = power(a, b);
-
-    // Calculate the sum of the digits
-    unsigned int temp = n; // creating a temporary variable to hold the value of n for digit sum calculation
-    unsigned int digitSum = 0; // initializing the digit sum variable to 0
-
-    while (temp > 0)
-    {
-        digitSum += temp % 10; // adding the last digit of temp to digitSum
-        temp /= 10; // removing the last digit from temp
-    }
-
-   
-    cout << a << "^" << b << " = " << n << endl;// printing the result of a^b
-    cout << "Sum Of Digits: " << digitSum << endl;// printing the sum of the digits of a^b
-
-    return 0; // returning 0 to indicate successful execution
-}
-
+	 unsigned long long int n = power(a, b);
+	 vector<int> digits = vectorize_digits(n);
+	 string digitString = vec_to_string(digits);
+	 int digitSum = sum_vector(digits);
+	 cout << a << "^" << b << " = " << n << endl;
+	 cout << "Digits: " << digitString << endl;
+	 cout << "Sum Of Digits: " << digitSum << endl;
+	 return 0;
+ }
